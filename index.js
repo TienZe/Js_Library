@@ -42,7 +42,7 @@ formAddBook.querySelector("input#title").addEventListener('input', e => {
         // khi input.validity error thì state invalid cx được thêm vào
         titleInput.setCustomValidity('Book with this title already exists.');
     } else {
-        titleInput.setCustomValidity('');
+        titleInput.setCustomValidity(''); // remove custom validity
     }
 });
 
