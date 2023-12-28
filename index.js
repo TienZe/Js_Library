@@ -11,7 +11,8 @@ formAddBook.addEventListener("submit", e => {
 
     let isValidForm = true;
 
-    // Validation sử dụng html validation attributes (required, min, ...)
+    // Kiểm tra các input.checkValidity()
+    // Nếu tồn tại 1 input ko hợp lệ thì form cx ko hợp lệ
     if (!formAddBook.checkValidity()) {
         isValidForm = false;
     }
@@ -36,13 +37,20 @@ formAddBook.addEventListener("submit", e => {
 // Validation input title of adding form
 formAddBook.querySelector("input#title").addEventListener('input', e => {
     const titleInput = e.target;
+
     // Validate exist title
     if (isExistBookWithTitle(titleInput.value)) {
         // Add custom error, ngăn form submit (form.checkValidity() -> return false)
         // khi input.validity error thì state invalid cx được thêm vào
-        titleInput.setCustomValidity('Book with this title already exists.');
+        titleInput.setCustomValidity('Does exist title');
+        setMessageError(titleInput, "This title has already done exist");
     } else {
         titleInput.setCustomValidity(''); // remove custom validity
+    }
+
+    // Validate required title
+    if (titleInput.validity.valueMissing) {
+        setMessageError(titleInput, "Please enter a title");
     }
 });
 
@@ -167,4 +175,10 @@ function disposeAddingModal() {
     formAddBook.classList.remove("was-validated");
     // Close modal
     document.getElementById("btn-close").click();
+}
+
+function setMessageError(input, message) {
+    // Get the element renders message
+    const messageEle = input.parentElement.querySelector('.invalid-feedback');
+    messageEle.textContent = message;
 }
